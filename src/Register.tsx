@@ -19,7 +19,7 @@ const Register = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (isSuccess) {
-      navigate("/")
+      navigate("/auth")
     }
   }, [isSuccess])
 
