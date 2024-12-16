@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   if (isSuccess) {
-    navigate('/auth/user/profile');
+    navigate('/auth/pro');
   }
 
   return (
