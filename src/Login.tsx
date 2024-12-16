@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   if (isSuccess) {
-    navigate('/auth/pro');
+    navigate('/cart/pro');
   }
 
   return (
