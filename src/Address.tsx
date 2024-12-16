@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {  IAddress, useAddAddressMutation, useGetAddressesQuery } from "./redux/addressApi";
+import { IAddress, useAddAddressMutation, useGetAddressesQuery } from "./redux/addressApi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 
-// Zod schema for address form validation
+
 const addressSchema = z.object({
   userId: z.string().optional(),
-  pincode: z.number().min(100000, "Pincode must be a 6 digit number"), 
+  pincode: z.number().min(100000, "Pincode must be a 6 digit number"),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
@@ -23,18 +23,18 @@ const addressSchema = z.object({
 });
 
 const Address = () => {
-    const {user}= useSelector<RootState, any>(state => state.auth)
-    const {data}= useGetAddressesQuery(user._id)
+  const { user } = useSelector<RootState, any>(state => state.auth)
+  const { data } = useGetAddressesQuery(user._id)
 
-    
+
   const [addAddress] = useAddAddressMutation();
   const [update, setUpdate] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
 
-  
-   const {
+
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -42,15 +42,15 @@ const Address = () => {
   } = useForm<IAddress>({
     resolver: zodResolver(addressSchema),
   });
-console.log("----------", errors);
+  console.log("----------", errors);
 
-  const onSubmit:SubmitHandler<IAddress> = (formData) => {
+  const onSubmit: SubmitHandler<IAddress> = (formData) => {
     try {
-        console.log(formData);
-        
-      addAddress({...formData, userId:user._id});  
-      setModalShow(false);  
-      reset();  
+      console.log(formData);
+
+      addAddress({ ...formData, userId: user._id });
+      setModalShow(false);
+      reset();
     } catch (error) {
       console.error("Error adding address", error);
     }
@@ -137,132 +137,132 @@ console.log("----------", errors);
 
       {/* Modal */}
       {modalShow && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="modal modal-open">
-      <div className="modal-box w-full max-w-md">
-        <h3 className="text-lg font-semibold mb-4">Add New Address</h3>
-        {/* <pre>{errors }</pre> */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* First Name */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">First Name</label>
-            <input
-              {...register("firstname", { required: "First Name is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-           
-          </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="modal modal-open">
+            <div className="modal-box w-full max-w-md">
+              <h3 className="text-lg font-semibold mb-4">Add New Address</h3>
+              {/* <pre>{errors }</pre> */}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {/* First Name */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">First Name</label>
+                  <input
+                    {...register("firstname", { required: "First Name is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
 
-          {/* Last Name */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Last Name</label>
-            <input
-              {...register("lastName", { required: "Last Name is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-            
-          </div>
+                </div>
 
-          {/* Address Type */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Address Type</label>
-            <input
-              {...register("addressType", { required: "Address Type is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-            
-          </div>
+                {/* Last Name */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Last Name</label>
+                  <input
+                    {...register("lastName", { required: "Last Name is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
 
-          {/* Address */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Address</label>
-            <input
-              {...register("address", { required: "Address is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-            
-          </div>
+                </div>
 
-          {/* City */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">City</label>
-            <input
-              {...register("city", { required: "City is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-            
-          </div>
+                {/* Address Type */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Address Type</label>
+                  <input
+                    {...register("addressType", { required: "Address Type is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
 
-          {/* State */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">State</label>
-            <input
-              {...register("state", { required: "State is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-            
-          </div>
+                </div>
 
-          {/* Country */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Country</label>
-            <input
-              {...register("country", { required: "Country is required" })}
-              className="w-full p-2 border rounded"
-              type="text"
-            />
-            
-          </div>
+                {/* Address */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Address</label>
+                  <input
+                    {...register("address", { required: "Address is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
 
-          {/* Pincode */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Pincode</label>
-            <input
-              {...register("pincode", { required: "Pincode is required", valueAsNumber: true })}
-              className="w-full p-2 border rounded"
-              type="number"
-            />
-            
-          </div>
+                </div>
 
-          {/* Mobile */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Mobile</label>
-            <input
-              {...register("mobile", { required: "Mobile is required" })}
-              className="w-full p-2 border rounded"
-              type="number"
-            />
-            
-          </div>
+                {/* City */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">City</label>
+                  <input
+                    {...register("city", { required: "City is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
 
-          {/* Modal Actions */}
-          <div className="modal-action">
-            <button
-              type="button"
-              onClick={() => setModalShow(false)}
-              className="btn btn-secondary"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-            >
-              Save Address
-            </button>
+                </div>
+
+                {/* State */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">State</label>
+                  <input
+                    {...register("state", { required: "State is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
+
+                </div>
+
+                {/* Country */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Country</label>
+                  <input
+                    {...register("country", { required: "Country is required" })}
+                    className="w-full p-2 border rounded"
+                    type="text"
+                  />
+
+                </div>
+
+                {/* Pincode */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Pincode</label>
+                  <input
+                    {...register("pincode", { required: "Pincode is required", valueAsNumber: true })}
+                    className="w-full p-2 border rounded"
+                    type="number"
+                  />
+
+                </div>
+
+                {/* Mobile */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Mobile</label>
+                  <input
+                    {...register("mobile", { required: "Mobile is required" })}
+                    className="w-full p-2 border rounded"
+                    type="number"
+                  />
+
+                </div>
+
+                {/* Modal Actions */}
+                <div className="modal-action">
+                  <button
+                    type="button"
+                    onClick={() => setModalShow(false)}
+                    className="btn btn-secondary"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    Save Address
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </form>
-      </div>
-    </div>
-  </div>
-)}
+        </div>
+      )}
 
 
     </>
